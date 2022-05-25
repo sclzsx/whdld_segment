@@ -137,12 +137,12 @@ def predict_images(net, args, dst_size=(256, 256), save_dir=None):
         # times.append(cost_time)
         print('Processed image:{}\t\tTime:{}'.format(path.name, cost_time))
         if save_dir is not None:
-            cv2.imwrite(save_dir + '/pred_vis-' + args.pt_dir + '-' + path.name, dst_show)
+            cv2.imwrite(save_dir + '/' + path.name[:-4] + '_' + args.pt_dir + '.jpg' + path.name, dst_show)
         else:
             plt.imshow(dst_show)
             plt.pause(0.5)
         
-        break
+        # break
 
     # if save_dir is not None:
     #     with open(save_dir + '/pred_dicts-' + args.pt_dir + '-.json', 'w') as f:
