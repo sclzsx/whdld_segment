@@ -129,20 +129,45 @@ def add_mask_to_source_multi_classes(source_np, mask_np, num_classes):
     return show
 
 
-def vis_pred(pred, num_classes):
-    h,w = pred.shape
-    out = np.zeros((h,w,3), dtype='uint8')
+def vis_pred(mask_np, num_classes):
+    h, w = mask_np.shape
+    show = np.zeros((h,w,3), dtype='uint8')
     colors  = [[192, 192, 0], [0, 255, 0], [128, 128, 128], [255, 255, 0], [255, 0, 0], [0, 0, 255]]
+
     for i in range(num_classes):
-        fg_tmp = np.where(pred == i, 1, 0)
-        fg_tmp_mask_bool = fg_tmp.astype('bool')
+        fg_mask_tmp = (np.where(mask_np == i, 1, 0)).astype('bool')
 
-        fg_color_tmp = np.zeros(out.shape, dtype='uint8')
-        fg_color_tmp[:, :] = colors[i]
-        for c in range(3):
-            fg_color_tmp[:, :, c] *= fg_tmp_mask_bool
-        foreground += fg_color_tmp
+        fg_color_tmp = np.zeros((h,w,3), dtype='uint8')
+        for j in range(3):
+            fg_color_tmp[:,:,j] = colors[i][j]
+            fg_color_tmp[:,:,j] = fg_color_tmp[:,:,j] * fg_mask_tmp
+        show = show + fg_color_tmp
 
+    show = cv2.cvtColor(show, cv2.COLOR_BGR2RGB)
+    # foreground_mask_bool = mask_np.astype('bool')
+    # foreground_mask = mask_np * foreground_mask_bool
+    # foreground = np.zeros(source_np.shape, dtype='uint8')
+    # background = source_np.copy()
+
+    # for i in range(num_classes):
+    #     fg_tmp = np.where(foreground_mask == i, 1, 0)
+    #     fg_tmp_mask_bool = fg_tmp.astype('bool')
+
+    #     fg_color_tmp = np.zeros(source_np.shape, dtype='uint8')
+    #     fg_color_tmp[:, :] = colors[i]
+    #     for c in range(3):
+    #         fg_color_tmp[:, :, c] *= fg_tmp_mask_bool
+    #     foreground += fg_color_tmp
+    # # foreground = cv2.addWeighted(source_np, 0.1, foreground, 0.9, 0)
+
+    # for i in range(3):
+    #     foreground[:, :, i] *= foreground_mask_bool
+    #     background[:, :, i] *= ~foreground_mask_bool
+
+    # show = foreground + background
+    # plt.imshow(show)
+    # plt.pause(0.5)
+    return show
 
 def add_mask_to_source(source_np, mask_np, color):
     mask_bool = (np.ones(mask_np.shape, dtype='uint8') & mask_np).astype('bool')

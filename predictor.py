@@ -121,25 +121,29 @@ def predict_images(net, args, dst_size=(256, 256), save_dir=None):
             prediction_np = cv2.erode(prediction_np, kernel)
         dst_frame = cv2.resize(frame, dst_size)
         dst_prediction = cv2.resize(prediction_np, dst_size)
+        # print(dst_prediction.shape)
 
-        pred_dict = Counter(dst_prediction.flatten())
-        print(pred_dict)
+        # pred_dict = Counter(dst_prediction.flatten())
+        # pred_dicts.append(pred_dict)
+        # print(pred_dict)
 
-        dst_frame = np.zeros_like(dst_frame)
-        # dst_show = add_mask_to_source_multi_classes(dst_frame, dst_prediction, args.out_channels)
-        dst_show = vis_pred(dst_prediction)
+        # dst_frame = np.zeros_like(dst_frame)
+        # # dst_show = add_mask_to_source_multi_classes(dst_frame, dst_prediction, args.out_channels)
+        dst_show = vis_pred(dst_prediction, args.out_channels)
 
         torch.cuda.synchronize()
         end = time.time()
         cost_time = end - start
-        times.append(cost_time)
+        # times.append(cost_time)
         print('Processed image:{}\t\tTime:{}'.format(path.name, cost_time))
         if save_dir is not None:
-            cv2.imwrite(save_dir + '/test_image-' + args.pt_dir + '-' + path.name + '.jpg', dst_show)
+            cv2.imwrite(save_dir + '/pred_vis-' + args.pt_dir + '-' + path.name, dst_show)
         else:
             plt.imshow(dst_show)
             plt.pause(0.5)
+        
+        break
 
-    if save_dir is not None:
-        with open(save_dir + '/pred_dicts-' + args.pt_dir + '-.json', 'w') as f:
-            json.dump(pred_dicts, f, indent=2)
+    # if save_dir is not None:
+    #     with open(save_dir + '/pred_dicts-' + args.pt_dir + '-.json', 'w') as f:
+    #         json.dump(pred_dicts, f, indent=2)

@@ -110,7 +110,7 @@ if __name__ == '__main__':
     os.environ["CUDA_VISIBLE_DEVICES"] = '0'
 
     aug = False
-    num_classes = 2
+    num_classes = 6
     appoint_size = (256, 256)
     dataset_dir = 'data/val'
 

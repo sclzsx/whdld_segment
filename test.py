@@ -95,21 +95,15 @@ def do_search(args, task=0):
 
     if task == 0:
         args.test_videos = 'none'
-        args.test_set = 'data/val'
+        args.test_set = '/home/SENSETIME/sunxin/3_datasets/WHDLD/test'
 
-        # args.save_dir = './Results_predict'
-        # args.test_images = 'Data/predict'
+        args.save_dir = './Result_images'
+        args.test_images = '/home/SENSETIME/sunxin/3_datasets/WHDLD/test/images'
+        args.out_channels = 6
 
-        # args.save_dir = './Results_test_images'
-        # args.test_images = 'Data/test_images'
+        pt_dirs = [i.name for i in Path(args.pt_root).iterdir() if i.is_dir() and 'fcn' in i.name]
 
-        args.save_dir = './Results_test_images2'
-        args.test_images = 'data/val/images'
-
-        args.out_channels = 2
-        pt_dirs = [i.name for i in Path(args.pt_root).iterdir() if i.is_dir() and 'ori' in i.name]
-
-    modes = [1,0]
+    modes = [1]
     for mode in modes:
         for pt_dir in pt_dirs:
             args.pt_dir = pt_dir

@@ -145,7 +145,7 @@ def get_choices(args, task):
 
     if task == 0:
         erodes = [0]
-        args.train_set = '/home/SENSETIME/sunxin/3_datasets/WHDLD/test'
+        args.train_set = '/home/SENSETIME/sunxin/3_datasets/WHDLD/train'
         args.val_set = '/home/SENSETIME/sunxin/3_datasets/WHDLD/test'
         args.test_set = '/home/SENSETIME/sunxin/3_datasets/WHDLD/test'
 
@@ -154,7 +154,7 @@ def get_choices(args, task):
 
 def search_train(args):
     args.out_channels = 6
-    args.epoch = 2
+    args.epoch = 120
     args.batch_size = 4
     args.gpu = 0
 
